@@ -24,7 +24,6 @@ env:
   ISSUE_TEMPLATE: ".github/workflows/check-broken-links.md"
 
 jobs:
-  if: github.repository == 'alt3/Docusaurus.Powershell'
   check:
     runs-on: ubuntu-latest
 
