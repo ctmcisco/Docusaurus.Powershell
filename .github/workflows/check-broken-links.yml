@@ -22,9 +22,9 @@ on: [push]
 env:
   WEBSITE_URL: "https://docusaurus-powershell.netlify.com/"
   ISSUE_TEMPLATE: ".github/workflows/check-broken-links.md"
-if: github.repository == 'alt3/Docusaurus.Powershell'
 
 jobs:
+  if: github.repository == 'alt3/Docusaurus.Powershell'
   check:
     runs-on: ubuntu-latest
 
