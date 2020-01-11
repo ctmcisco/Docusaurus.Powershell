@@ -31,7 +31,7 @@ steps:
         OutputFormat = "NUnitXml"
         OutputFile = Join-Path '$(Common.TestResultsDirectory)' 'Test-$(Build.SourceVersion).xml'
         Show = "${{ parameters.show }}"
-        EnableExit
+        EnableExit = $True
     }
 
     if ($CodeCoverage = "${{ parameters.codeCoverageDirectory }}") {
