@@ -32,16 +32,11 @@ stages:
       artifactName: $(ArtifactName)
 
 # -----------------------------------------------------------------------------
-# Stage 2 - Continuous Integration (CI)
+# Stage 2 - Pester Tests - Continuous Integration (CI)
 # -----------------------------------------------------------------------------
-- stage: Validate
+- stage: Test
   dependsOn: Build
   jobs:
-  - template: .azure-templates/jobs/ci/script-analyzer.yml
-    parameters:
-      dependsOn: []
-      artifactName: $(ArtifactName)
-
   - template: .azure-templates/jobs/ci/pester.yml
     parameters:
       dependsOn: []
@@ -59,14 +54,25 @@ stages:
         vmImage: $(vmImage)
 
 # -----------------------------------------------------------------------------
-# Stage 3 - Continuous Deployment (CD)
+# Stage 3 - Analyze - Continuous Integration (CI)
 # -----------------------------------------------------------------------------
-# IMPORTANT:
+- stage: Analyze
+  dependsOn: Test
+  jobs:
+  - template: .azure-templates/jobs/ci/script-analyzer.yml
+    parameters:
+      dependsOn: []
+      artifactName: $(ArtifactName)
+
+# -----------------------------------------------------------------------------
+# Stage 4 - Continuous Deployment (CD)
+# -----------------------------------------------------------------------------
+# GOOD TO KNOW:
 # - stage skipped completely if not on the master branch
 # - job steps not executed if the commit message contains [no-release]
 # -----------------------------------------------------------------------------
 - stage: Publish
-  dependsOn: Validate
+  dependsOn: Analyze
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
 
   # ---------------------------------------------------------------------------
