@@ -41,6 +41,26 @@ jobs:
         Write-Host "additionalModulePaths:"
       displayName: 'Log Template Parameters'
 
+    # -------------------------------------------------------------------------
+    # download the module artifact
+    # -------------------------------------------------------------------------
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Build Artifacts'
+      condition: and(succeeded(), ne(variables['SKIP_RELEASE'], 'True'))
+      inputs:
+        artifactName: ${{ parameters.artifactName }}
+        downloadPath: ${{ parameters.artifactDownloadDirectory }}
+
+    # -------------------------------------------------------------------------
+    # create environment variables by analyzing the module artifact
+    # -------------------------------------------------------------------------
+    - template: ../../steps/cd/create-variables-from-modules-artifact.yml
+      parameters:
+        artifactDownloadDirectory: ${{ parameters.artifactDownloadDirectory }}
+
+    # -------------------------------------------------------------------------
+    # continue with Posh pester steps
+    # -------------------------------------------------------------------------
     - checkout: self # re-checkout, because we don't package tests
       fetchDepth: 1  # we only need the current tests
       lfs: true
@@ -59,7 +79,7 @@ jobs:
 
     - powershell: |
         # make artifact directory available for import
-        $env:PSModulePath = $env:PSModulePath + ";${{ parameters.artifactDownloadDirectory }}"
+        $env:PSModulePath = $env:PSModulePath + ";$($env:ARTIFACT_MODULE_FOLDER)"
         Write-Host "PSModulePath:"
         Write-Host $env:psmodulePath
 
