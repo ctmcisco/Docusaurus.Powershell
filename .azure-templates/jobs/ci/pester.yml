@@ -59,7 +59,7 @@ jobs:
 
     - powershell: |
         # make artifact directory available for import
-        $env:PSModulePath = $env:PSModulePath + "${{ parameters.artifactDownloadDirectory }}"
+        $env:PSModulePath = $env:PSModulePath + ";${{ parameters.artifactDownloadDirectory }}"
         Write-Host "PSModulePath:"
         Write-Host $env:psmodulePath
 
