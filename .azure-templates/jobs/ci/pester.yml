@@ -39,9 +39,7 @@ jobs:
         Write-Host "artifactName              = ${{ parameters.artifactName }}"
         Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
         Write-Host "additionalModulePaths:"
-        ${{ parameters.additionalModulePaths }} | Foreach-Object {
-          Write-Host "=> $($_)"
-        }
+        Write-Host (${{ parameters.additionalModulePaths }} | ConvertTo-Json)
       displayName: 'Log Template Parameters'
 
     - checkout: self # re-checkout, because we don't package tests
