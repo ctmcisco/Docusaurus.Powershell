@@ -63,7 +63,7 @@ jobs:
         testsDirectory: ${{ parameters.testsDirectory }}
         includeTag: ${{ parameters.includeTag }}
         excludeTag: ${{ parameters.excludeTag }}
-        additionalModulePaths: $(AdditionalModulePaths)
+        # additionalModulePaths: $(AdditionalModulePaths)
         codeCoverageDirectory: $(CodeCoverageDirectory)
         configurationName: 'Pester Unit Tests'
         show: ${{ parameters.show }}
