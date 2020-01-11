@@ -59,10 +59,17 @@ stages:
 - stage: Analyze
   dependsOn: Test
   jobs:
+  # ---------------------------------------------------------------------------
+  # A) PSScriptAnalyzer - specify image ?!?
+  # ---------------------------------------------------------------------------
   - template: .azure-templates/jobs/ci/script-analyzer.yml
     parameters:
       dependsOn: []
       artifactName: $(ArtifactName)
+
+  # ---------------------------------------------------------------------------
+  # B) Code Coverage - TODO: specifiy image ?!?
+  # ---------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Stage 4 - Release new Module Version (CD)
