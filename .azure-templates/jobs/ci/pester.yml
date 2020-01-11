@@ -58,8 +58,12 @@ jobs:
         downloadPath: ${{ parameters.artifactDownloadDirectory }}
 
     - powershell: |
+        # make artifact directory available for import
         $env:PSModulePath = $env:PSModulePath + "${{ parameters.artifactDownloadDirectory }}"
+        Write-Host "PSModulePath:"
+        Write-Host $env:psmodulePath
 
+        # additional stuff
         $AdditionalModulePaths = @(if("${{ parameters.artifactName }}"){"${{ parameters.artifactDownloadDirectory }}"}) +
             @("${{ join('", "', parameters.additionalModulePaths) }}") -join [IO.Path]::PathSeparator
         Write-Host "##vso[task.setvariable variable=AdditionalModulePaths]$AdditionalModulePaths"

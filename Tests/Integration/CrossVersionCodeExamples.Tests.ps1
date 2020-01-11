@@ -8,7 +8,7 @@
 # import the Alt3.Docusaurus.Powershell rendering module
 # -----------------------------------------------------------------------------
 if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
-    Import-Module Alt3.Docusaurus.Powershell.psd1 -DisableNameChecking -Verbose:$False -Scope Global
+    Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False -Scope Global
 }
 
 # -----------------------------------------------------------------------------
