@@ -11,7 +11,7 @@ parameters:
 
 steps:
 - powershell: |
-    # Preinstall and import the specified version of the module
+    # Preinstall and import the specified version of the Pester module
     Set-PSRepository PSGallery -InstallationPolicy Trusted
     $Version = if ("${{ parameters.pesterVersion }}") {
         "${{ parameters.pesterVersion }}"
