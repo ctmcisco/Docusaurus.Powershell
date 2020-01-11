@@ -48,14 +48,14 @@ jobs:
         artifactName: ${{ parameters.artifactName }}
         downloadPath: ${{ parameters.artifactDownloadDirectory }}
 
-    # - powershell: |
-    #     $AdditionalModulePaths = @(if("${{ parameters.artifactName }}"){"${{ parameters.artifactDownloadDirectory }}"}) +
-    #         @("${{ join('", "', parameters.additionalModulePaths) }}") -join [IO.Path]::PathSeparator
-    #     Write-Host "##vso[task.setvariable variable=AdditionalModulePaths]$AdditionalModulePaths"
-    #     if(!"$(CodeCoverageDirectory)" -and "${{ parameters.artifactName }}") {
-    #         Write-Host "##vso[task.setvariable variable=CodeCoverageDirectory]${{ parameters.artifactDownloadDirectory }}"
-    #     }
-    #   displayName: 'Combine paths'
+    - powershell: |
+        $AdditionalModulePaths = @(if("${{ parameters.artifactName }}"){"${{ parameters.artifactDownloadDirectory }}"}) +
+            @("${{ join('", "', parameters.additionalModulePaths) }}") -join [IO.Path]::PathSeparator
+        Write-Host "##vso[task.setvariable variable=AdditionalModulePaths]$AdditionalModulePaths"
+        if(!"$(CodeCoverageDirectory)" -and "${{ parameters.artifactName }}") {
+            Write-Host "##vso[task.setvariable variable=CodeCoverageDirectory]${{ parameters.artifactDownloadDirectory }}"
+        }
+      displayName: 'Combine paths'
 
     - template: ../../steps/ci/pester.yml
       parameters:
@@ -63,7 +63,7 @@ jobs:
         testsDirectory: ${{ parameters.testsDirectory }}
         includeTag: ${{ parameters.includeTag }}
         excludeTag: ${{ parameters.excludeTag }}
-        # additionalModulePaths: $(AdditionalModulePaths)
+        additionalModulePaths: $(AdditionalModulePaths)
         codeCoverageDirectory: $(CodeCoverageDirectory)
         configurationName: 'Pester Unit Tests'
         show: ${{ parameters.show }}
