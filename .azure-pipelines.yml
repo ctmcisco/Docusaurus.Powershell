@@ -20,7 +20,7 @@ variables:
 stages:
 
 # -----------------------------------------------------------------------------
-# Stage 1 - Continuous Integration (CI)
+# Stage 1 - Build the Module (CI)
 # -----------------------------------------------------------------------------
 - stage: Build
   jobs:
@@ -32,7 +32,7 @@ stages:
       artifactName: $(ArtifactName)
 
 # -----------------------------------------------------------------------------
-# Stage 2 - Pester Tests - Continuous Integration (CI)
+# Stage 2 - Run Pester Tests (CI)
 # -----------------------------------------------------------------------------
 - stage: Test
   dependsOn: Build
@@ -44,17 +44,17 @@ stages:
       TestsDirectory: '$(Build.SourcesDirectory)/Tests' # Linux users: be aware of the upperase T
       strategy:
         matrix:
-          Linux:
-            vmImage: 'ubuntu-16.04'
-          MacOS:
-            vmImage: 'macOS-10.14'
+          # Linux:
+          #   vmImage: 'ubuntu-16.04'
+          # MacOS:
+          #   vmImage: 'macOS-10.14'
           Windows:
             vmImage: 'windows-2019'
       pool:
         vmImage: $(vmImage)
 
 # -----------------------------------------------------------------------------
-# Stage 3 - Analyze - Continuous Integration (CI)
+# Stage 3 - Analyze the Module (CI)
 # -----------------------------------------------------------------------------
 - stage: Analyze
   dependsOn: Test
@@ -65,13 +65,13 @@ stages:
       artifactName: $(ArtifactName)
 
 # -----------------------------------------------------------------------------
-# Stage 4 - Continuous Deployment (CD)
+# Stage 4 - Release new Module Version (CD)
 # -----------------------------------------------------------------------------
 # GOOD TO KNOW:
 # - stage skipped completely if not on the master branch
 # - job steps not executed if the commit message contains [no-release]
 # -----------------------------------------------------------------------------
-- stage: Publish
+- stage: Release
   dependsOn: Analyze
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
 

@@ -32,6 +32,15 @@ jobs:
     steps:
     - template: ../../steps/log-virtual-machine-information.yml
 
+    # log template parameters
+    - powershell: |
+        Write-Host "testsDirectory            = ${{ parameters.testsDirectory }}"
+        Write-Host "requiredModulesPath       = ${{ parameters.requiredModulePath }}"
+        Write-Host "artifactName              = ${{ parameters.artifactName }}"
+        Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
+        Write-Host "additionalModulePaths     = ${{ parameters.additionalModulePaths }}"
+      displayName: 'Log Template Parameters'
+
     - checkout: self # re-checkout, because we don't package tests
       fetchDepth: 1  # we only need the current tests
       lfs: true
